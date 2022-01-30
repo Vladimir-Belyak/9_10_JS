@@ -126,6 +126,11 @@
   .fruit_lightbrown {
     background: #cd853f;
   }
+
+  .fruit_new {
+    background: #8f8e8d;
+  }
+  
   
   .fruit__info {
     display: flex;

@@ -20,11 +20,10 @@ let fruitsJSON = `[
   {"kind": "Тамаринд", "color": "светло-коричневый", "weight": 22, "class": "fruit_lightbrown"}
 ]`;
 
-// преобразование JSON в объект JavaScript
 let fruits = JSON.parse(fruitsJSON);
+
 /*** ОТОБРАЖЕНИЕ ***/
 
-// отрисовка карточек
 const display = (displayArray) => {
   let parent = document.querySelector('.fruits__list');
   parent.innerHTML = '';
@@ -53,17 +52,14 @@ const display = (displayArray) => {
   }
 };
 
-// первая отрисовка карточек
 display(fruits);
 
 /*** ПЕРЕМЕШИВАНИЕ ***/
 
-// генерация случайного числа в заданном диапазоне
 const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-// перемешивание массива
 const shuffleFruits = () => {
   let tempArray = fruits;
   let result = [];
@@ -85,7 +81,6 @@ shuffleButton.addEventListener('click', () => {
 
 /*** ФИЛЬТРАЦИЯ ***/
 
-// фильтрация массива
 const filterFruits = () => {
   let filterArray = [];
   let minWeight=parseInt(document.querySelector('.minweight__input').value);
@@ -105,12 +100,11 @@ filterButton.addEventListener('click', () => {
 
 /*** СОРТИРОВКА ***/
 
-let sortKind = 'bubbleSort'; // инициализация состояния вида сортировки
-let sortTime = '-'; // инициализация состояния времени сортировки
+let sortKind = 'bubbleSort'; 
+let sortTime = '-'; 
 
 const comparationColor = (a, b) => {
   return a > b ? true : false;
-  // TODO: допишите функцию сравнения двух элементов по цвету
 };
 
 const sortAPI = {
@@ -168,7 +162,6 @@ const sortAPI = {
     }
   },
 
-  // выполняет сортировку и производит замер времени
   startSort(sort, arr, comparation) {
     const start = new Date().getTime();
     sort(arr, comparation);
@@ -177,7 +170,6 @@ const sortAPI = {
   },
 };
 
-// инициализация полей
 sortKindLabel.textContent = sortKind;
 sortTimeLabel.textContent = sortTime;
 
@@ -191,7 +183,6 @@ sortChangeButton.addEventListener('click', () => {
 sortActionButton.addEventListener('click', () => {
   sortTimeLabel.textContent = 'Сортировка...';
   const sort = sortAPI[sortKind];
-  console.log(sort);
   sortAPI.startSort(sort, fruits, comparationColor);
   display(fruits);
   sortTimeLabel.textContent = sortTime;
@@ -200,7 +191,20 @@ sortActionButton.addEventListener('click', () => {
 /*** ДОБАВИТЬ ФРУКТ ***/
 
 addActionButton.addEventListener('click', () => {
-  // TODO: создание и добавление нового фрукта в массив fruits
-  // необходимые значения берем из kindInput, colorInput, weightInput
+  let kindNewFruit = kindInput.value.trim();
+  let colorNewFruit = colorInput.value.trim();
+  let weightNewFruit = parseInt(weightInput.value);
+  if (kindNewFruit === '' || colorNewFruit === '' || isNaN(weightNewFruit) || weightNewFruit < 0) {
+    alert('Введены некорректные данные для добавления фрукта!');
+  } else {
+  let newFruit = {
+    'kind': kindInput.value,
+    'color': colorInput.value,
+    'weight': parseInt(weightInput.value),
+    'class': 'fruit_new'      //Не успел реализовать проверку стиля с существующими фруктами по виду,
+  };                          //сделал для новых дефолтный серый цвет.
+  fruits.push(newFruit);
   display(fruits);
+  }  
 });
+
