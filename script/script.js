@@ -26,10 +26,12 @@ let fruits = JSON.parse(fruitsJSON);
 
 // отрисовка карточек
 const display = (displayArray) => {
-  console.log(displayArray);
   let parent = document.querySelector('.fruits__list');
   parent.innerHTML = '';
 
+
+//Про индексы не указано что выводить "родного массива" или текущего,
+//сделал текущего что-то вроде "нумерации". Нужно ТЗ точнее;)
   for (let i = 0; i < displayArray.length; i++) {
     addLi = document.createElement('li');
     addLi.className = 'fruit__item '+displayArray[i].class;
@@ -107,12 +109,20 @@ let sortKind = 'bubbleSort'; // инициализация состояния в
 let sortTime = '-'; // инициализация состояния времени сортировки
 
 const comparationColor = (a, b) => {
+  return a > b ? true : false;
   // TODO: допишите функцию сравнения двух элементов по цвету
 };
 
 const sortAPI = {
   bubbleSort(arr, comparation) {
-    // TODO: допишите функцию сортировки пузырьком
+   const n = arr.length;
+   for (let i = 0; i < n-1; i++) { 
+       for (let j = 0; j < n-1-i; j++) { 
+           if (comparation(arr[j].color, arr[j+1].color)) { 
+               [arr[j], arr[j+1]] = [arr[j+1], arr[j]]; 
+           }
+       }
+   }                 
   },
 
   quickSort(arr, comparation) {
@@ -133,15 +143,19 @@ sortKindLabel.textContent = sortKind;
 sortTimeLabel.textContent = sortTime;
 
 sortChangeButton.addEventListener('click', () => {
-  // TODO: переключать значение sortKind между 'bubbleSort' / 'quickSort'
+  if (sortKind === 'bubbleSort'){
+    sortKind = 'quickSort';
+  } else sortKind = 'bubbleSort';
+  sortKindLabel.textContent = sortKind;
 });
 
 sortActionButton.addEventListener('click', () => {
-  // TODO: вывести в sortTimeLabel значение 'sorting...'
+  sortTimeLabel.textContent = 'Сортировка...';
   const sort = sortAPI[sortKind];
+  console.log(sort);
   sortAPI.startSort(sort, fruits, comparationColor);
   display(fruits);
-  // TODO: вывести в sortTimeLabel значение sortTime
+  sortTimeLabel.textContent = sortTime;
 });
 
 /*** ДОБАВИТЬ ФРУКТ ***/
