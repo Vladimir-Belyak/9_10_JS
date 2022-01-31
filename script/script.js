@@ -25,16 +25,14 @@ let fruits = JSON.parse(fruitsJSON);
 /*** ОТОБРАЖЕНИЕ ***/
 
 const display = (displayArray) => {
-  let parent = document.querySelector('.fruits__list');
-  parent.innerHTML = '';
-
+  fruitsList.innerHTML = '';
 
 //Про индексы не указано что выводить "родного массива" или текущего,
 //сделал текущего что-то вроде "нумерации". Нужно ТЗ точнее;)
   for (let i = 0; i < displayArray.length; i++) {
     addLi = document.createElement('li');
     addLi.className = 'fruit__item '+displayArray[i].class;
-    parent.appendChild(addLi);
+    fruitsList.appendChild(addLi);
     addDivMain = document.createElement('div');
     addDivMain.className = 'fruit__info';
     addLi.appendChild(addDivMain);
@@ -119,7 +117,7 @@ const sortAPI = {
    }                 
   },
 
-  quickSort(arr, comparation) {
+  quickSort(arr) {
     quickSortFunc(arr, 0, arr.length-1);
     function swap(items, firstIndex, secondIndex){
       [arr[firstIndex], arr[secondIndex]] = [arr[secondIndex], arr[firstIndex]]
@@ -196,13 +194,28 @@ addActionButton.addEventListener('click', () => {
   let weightNewFruit = parseInt(weightInput.value);
   if (kindNewFruit === '' || colorNewFruit === '' || isNaN(weightNewFruit) || weightNewFruit < 0) {
     alert('Введены некорректные данные для добавления фрукта!');
-  } else {
+  } else 
+    {
+      let newFruitKind = '';
+      switch (kindInput.value){                           //Если вид фрукта уже известен, то оформление 
+      case 'Мангустин': newFruitKind = 'fruit_violet';    //соответствующего цвета, иначе дефолтный серый
+      break;
+      case 'Дуриан': newFruitKind = 'fruit_green';
+      break;
+      case 'Личи': newFruitKind = 'fruit_carmazin';
+      break;
+      case 'Карамбола': newFruitKind = 'fruit_yellow';
+      break;
+      case 'Тамаринд': newFruitKind = 'fruit_lightbrown';
+      break;
+      default: newFruitKind = 'fruit_new';
+    }
   let newFruit = {
     'kind': kindInput.value,
     'color': colorInput.value,
     'weight': parseInt(weightInput.value),
-    'class': 'fruit_new'      //Не успел реализовать проверку стиля с существующими фруктами по виду,
-  };                          //сделал для новых дефолтный серый цвет.
+    'class': newFruitKind
+  };
   fruits.push(newFruit);
   display(fruits);
   }  
